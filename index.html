@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Сундук с лутом — задания для пары</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a472a 0%, #0a2a1a 100%);
+            font-family: 'Courier New', 'Minecraft', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chest-card {
+            background: #2b1e0f;
+            background-image: repeating-linear-gradient(45deg, #3d2a14 0px, #3d2a14 2px, #2b1e0f 2px, #2b1e0f 8px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            max-width: 500px;
+            width: 100%;
+            padding: 25px 20px 30px;
+            border: 4px solid #ffaa33;
+            text-align: center;
+        }
+
+        .chest-lid {
+            font-size: 64px;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #ffdd99;
+            font-size: 28px;
+            text-shadow: 3px 3px 0 #7a3a00;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            word-break: break-word;
+        }
+
+        .task-box {
+            background: #fef0cf;
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin: 15px 0;
+            border: 3px solid #d49436;
+            box-shadow: inset 0 0 15px rgba(100,50,0,0.2), 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .task-text {
+            font-size: 20px;
+            line-height: 1.4;
+            color: #2c1a0c;
+            font-weight: bold;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            word-break: break-word;
+        }
+
+        .task-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0 15px;
+        }
+
+        button {
+            background: #f0bc6e;
+            border: none;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #7a3a00;
+            transition: 0.07s linear;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #7a3a00;
+        }
+
+        .info {
+            font-size: 12px;
+            color: #ccaa77;
+            margin-top: 20px;
+            border-top: 1px solid #ccaa77;
+            padding-top: 15px;
+        }
+
+        a {
+            color: #ffdd99;
+        }
+
+        @media (max-width: 500px) {
+            .chest-card { padding: 16px; }
+            .task-text { font-size: 18px; }
+            button { padding: 8px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="chest-card">
+    <div class="chest-lid">🧰 ✨</div>
+    <h1>СУНДУК С ЛУТОМ</h1>
+    <div class="task-box" id="taskBox">
+        <div class="task-icon" id="taskIcon">🎲</div>
+        <div class="task-text" id="taskText">Кидай кубик...</div>
+    </div>
+    <div class="buttons">
+        <button id="newTaskBtn">🎲 НОВОЕ ЗАДАНИЕ</button>
+        <button id="copyBtn">📋 СКОПИРОВАТЬ</button>
+    </div>
+    <div class="info">
+        🔄 Обновляйте страницу — задания меняются<br>
+        💾 Нажмите «Скопировать», чтобы не забыть
+    </div>
+</div>
+
+<script>
+    // ======================== БАЗА ЗАДАНИЙ ========================
+    // Редактируй этот список! Добавляй или меняй когда захочешь.
+    const tasks = [
+        { icon: "💬", text: "Какое моё любимое времяпрепровождение с тобой?" },
+        { icon: "💬", text: "Когда ты в последний раз гордился(ась) мной? Расскажи подробнее." },
+        { icon: "💬", text: "Что я делаю, когда злюсь, но не показываю виду?" },
+        { icon: "💬", text: "Назови две вещи, которые ты хочешь попробовать со мной впервые." },
+        { icon: "💬", text: "Какая у меня привычка тебя умиляет?" },
+        { icon: "💬", text: "Какую музыку ты представляешь, когда думаешь обо мне?" },
+        { icon: "💬", text: "Что тебе во мне кажется самым загадочным?" },
+        { icon: "🎭", text: "Погладь партнёра по голове и скажи «Мой хороший / моя хорошая»." },
+        { icon: "🎭", text: "Почеши партнёру спину 15 секунд, не отвлекаясь." },
+        { icon: "🎭", text: "Сделай три неожиданных комплимента внешности партнёра." },
+        { icon: "🎭", text: "Обними партнёра и не отпускай 10 секунд." },
+        { icon: "🎭", text: "Посмотри в глаза партнёру 5 секунд молча, потом улыбнись." },
+        { icon: "🎭", text: "Поменяйся на один ход какой-то деталью одежды (носок, браслет, худи)." },
+        { icon: "🎲", text: "Сыграйте в «Камень-ножницы-бумага». Проигравший делает массаж плеч 15 секунд." },
+        { icon: "🎲", text: "Одновременно назовите любое число от 1 до 10. Если совпало → оба получаете по 2💎 (из банка)." },
+        { icon: "🎲", text: "Повтори за партнёром 3 движения. Ошибся — повтори ещё раз." },
+        { icon: "🎲", text: "Сядьте спиной к спине и встаньте, не размыкая рук. Получилось → +1💎 каждому." },
+        { icon: "💬", text: "Какое моё самое нелепое качество ты любишь?" },
+        { icon: "💬", text: "Что мне стоит перестать делать, чтобы тебе было легче?" },
+        { icon: "🎭", text: "Сделай партнёру чай/воду/сок и принеси с улыбкой." },
+        { icon: "🎭", text: "Скажи: «Я скучал(а) по тебе за последние 5 минут»." },
+        { icon: "🎲", text: "Закрой глаза. Партнёр называет предмет в комнате. Открой глаза и покажи на него." },
+        { icon: "🎲", text: "Спой один куплет любой песни, заменив слова на «мяу» или «хрю»." },
+        { icon: "💬", text: "Когда ты чувствуешь себя со мной в полной безопасности?" },
+        { icon: "🎭", text: "Поцелуй партнёра в щёку и скажи «Это аванс»." }
+    ];
+    // =============================================================
+
+    function getRandomTask() {
+        const randomIndex = Math.floor(Math.random() * tasks.length);
+        return tasks[randomIndex];
+    }
+
+    function displayTask(task) {
+        document.getElementById('taskIcon').innerHTML = task.icon;
+        document.getElementById('taskText').innerHTML = task.text;
+        localStorage.setItem('lastTaskIcon', task.icon);
+        localStorage.setItem('lastTaskText', task.text);
+    }
+
+    function getNewRandomTask() {
+        const newTask = getRandomTask();
+        displayTask(newTask);
+    }
+
+    function copyCurrentTask() {
+        const text = document.getElementById('taskText').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const originalBtnText = document.getElementById('copyBtn').innerHTML;
+            document.getElementById('copyBtn').innerHTML = '✅ ГОТОВО!';
+            setTimeout(() => {
+                document.getElementById('copyBtn').innerHTML = originalBtnText;
+            }, 1500);
+        }).catch(() => {
+            alert('Не удалось скопировать :( Можно скопировать вручную');
+        });
+    }
+
+    const savedIcon = localStorage.getItem('lastTaskIcon');
+    const savedText = localStorage.getItem('lastTaskText');
+    if (savedIcon && savedText) {
+        displayTask({ icon: savedIcon, text: savedText });
+    } else {
+        getNewRandomTask();
+    }
+
+    document.getElementById('newTaskBtn').addEventListener('click', getNewRandomTask);
+    document.getElementById('copyBtn').addEventListener('click', copyCurrentTask);
+</script>
+</body>
+</html>
