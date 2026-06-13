@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Опыты алхимии — испытание зельями</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Courier New', 'Minecraft', monospace;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .alchemy-card {
+            background: #6a1b9a;
+            background: radial-gradient(circle at 30% 20%, #9c27b0, #4a0072);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,200,0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 25px 20px 30px;
+            border: 4px solid #ce93d8;
+            text-align: center;
+        }
+
+        .potion-icon {
+            font-size: 64px;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+            margin-bottom: 10px;
+            animation: bubble 2s infinite;
+        }
+
+        @keyframes bubble {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 {
+            color: #e1bee7;
+            font-size: 28px;
+            text-shadow: 4px 4px 0 #4a0072;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .task-box {
+            background: #fef0cf;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 3px solid #ab47bc;
+            box-shadow: inset 0 0 15px rgba(100,50,0,0.2), 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .task-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .info {
+            font-size: 12px;
+            color: #ce93d8;
+            margin-top: 20px;
+            border-top: 1px solid #ce93d8;
+            padding-top: 15px;
+            text-shadow: 1px 1px 0 #4a0072;
+        }
+    </style>
+</head>
+<body>
+<div class="alchemy-card">
+    <div class="potion-icon">🧪 ✨ ⚗️</div>
+    <h1>ОПЫТЫ АЛХИМИИ</h1>
+    <div class="task-box" id="taskBox">
+        <img id="taskImage" src="" alt="Испытание зельем">
+    </div>
+    <div class="info">
+        🧪 Ваше испытание зельем<br>
+        🔮 Сканируйте QR-код снова для нового
+    </div>
+</div>
+
+<script>
+    // ======================== НАСТРОЙКИ ========================
+    const TOTAL_IMAGES = 16;   // 16 картинок
+    const IMAGE_EXT = 'png';   // расширение .png
+    // ============================================================
+
+    function getRandomImagePath() {
+        const randomNumber = Math.floor(Math.random() * TOTAL_IMAGES) + 1;
+        return `alchemy/${randomNumber}.${IMAGE_EXT}`;
+    }
+
+    // При загрузке страницы показываем случайную картинку
+    const imgPath = getRandomImagePath();
+    const imgElement = document.getElementById('taskImage');
+    imgElement.src = imgPath;
+    imgElement.alt = `Испытание зельем`;
+</script>
+</body>
+</html>
